@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / node ${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: [20, 22]
+    defaults:
+      run:
+        # bash on every OS (Git Bash on Windows) so the file globs below expand the same way
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+
+      # No npm install: the plugin has zero dependencies.
+
+      - name: Unit and integration tests
+        run: npm test
+
+      - name: Plugin structure and text checks
+        run: node scripts/check-skill.js
+
+      - name: Evals (dry run, no API calls)
+        run: node evals/run-evals.js
+
+      - name: Deep validate fixtures
+        run: node scripts/validate.js --deep tests/fixtures/mermaid/good-*.mmd tests/fixtures/canvas/valid-full.canvas

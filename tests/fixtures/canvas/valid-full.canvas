@@ -1,0 +1,14 @@
+{
+  "nodes": [
+    { "id": "g1", "type": "group", "x": 0, "y": 0, "width": 800, "height": 600, "label": "Ideas", "color": "4", "background": "bg.png", "backgroundStyle": "cover" },
+    { "id": "t1", "type": "text", "x": 20, "y": 40, "width": 300, "height": 200, "text": "# Note\n\n```mermaid\nflowchart LR\n  A[Start] --> B{Ok?}\n```", "color": "1" },
+    { "id": "f1", "type": "file", "x": 360, "y": 40, "width": 300, "height": 200, "file": "Brainstorm/brief.md", "subpath": "#Objective", "color": "#FF8800" },
+    { "id": "l1", "type": "link", "x": 20, "y": 300, "width": 300, "height": 120, "url": "https://jsoncanvas.org/spec/1.0/" },
+    { "id": "t2", "type": "text", "x": 1000, "y": 0, "width": 200, "height": 100, "text": "outside the group" }
+  ],
+  "edges": [
+    { "id": "e1", "fromNode": "t1", "toNode": "f1", "fromSide": "right", "toSide": "left", "fromEnd": "none", "toEnd": "arrow", "color": "2", "label": "explains" },
+    { "id": "e2", "fromNode": "f1", "toNode": "l1", "fromSide": "bottom", "toSide": "top", "toEnd": "none" },
+    { "id": "e3", "fromNode": "l1", "toNode": "t2", "fromEnd": "arrow", "color": "#00aa00" }
+  ]
+}

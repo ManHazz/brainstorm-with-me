@@ -1,0 +1,15 @@
+{
+  "id": "thinking-aloud",
+  "description": "User is musing. The skill should reflect back and offer a drawing, with no interview questions.",
+  "prompt": "brainstorming here... hmm what if the phone itself is the body. camera is eyes, mic is ears, IMU is like balance, and there's a spinal cord kind of reflex layer that reacts before the LLM even wakes up...",
+  "setup": {
+    "notes": "Fresh BWC_HOME and BWC_VAULT. No project exists yet.",
+    "steps": []
+  },
+  "k": 3,
+  "pass": [
+    { "type": "question_count", "target": "final", "max": 0, "ignore": "draw|board|sketch|diagram|map (it|this) out|put (it|that)", "why": "only a drawing offer may be a question" },
+    { "type": "regex", "target": "final", "pattern": "draw|board|sketch|diagram", "flags": "i", "why": "offers a drawing" },
+    { "type": "regex", "target": "final", "pattern": "reflex|spinal|body|sense", "flags": "i", "why": "reflects the user's own ideas" }
+  ]
+}

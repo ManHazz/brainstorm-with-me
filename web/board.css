@@ -1,0 +1,135 @@
+:root {
+  --bg: #f6f6f3;
+  --grid: #e4e4de;
+  --panel: #ffffff;
+  --ink: #1d1d1b;
+  --muted: #6b6b66;
+  --line: #8a8a84;
+  --border: #d3d3cc;
+  --accent: #2f6fdb;
+  --user: #b26b00;
+  --note: #fffdf3;
+  --question: #eef4ff;
+  --answer: #eefaf0;
+  --suggestion: #f6efff;
+  --error: #c62828;
+  --c1: #e5484d; --c2: #f76b15; --c3: #ffc53d; --c4: #30a46c; --c5: #00a2c7; --c6: #8e4ec6;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171716;
+    --grid: #232321;
+    --panel: #20201e;
+    --ink: #ecece8;
+    --muted: #9c9c96;
+    --line: #85857f;
+    --border: #3a3a37;
+    --accent: #6ea0ff;
+    --user: #f0a640;
+    --note: #262622;
+    --question: #1d2636;
+    --answer: #1c2a20;
+    --suggestion: #281f33;
+    --error: #ff6b6b;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  display: flex; flex-direction: column;
+  background: var(--bg); color: var(--ink);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+button {
+  font: inherit; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.bar {
+  display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+  background: var(--panel); border-bottom: 1px solid var(--border); flex-wrap: wrap;
+}
+.bar .spacer { flex: 1; }
+.status { color: var(--muted); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--border); }
+.status.your_turn { color: #fff; background: var(--accent); border-color: var(--accent); }
+.status.offline { color: var(--error); border-color: var(--error); }
+
+#viewport {
+  position: relative; flex: 1; overflow: hidden; cursor: grab; outline: none;
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  touch-action: none;
+}
+#viewport.panning { cursor: grabbing; }
+#viewport.connecting, #viewport.connecting .node { cursor: crosshair; }
+#world { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+#edges { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: visible; }
+#edges line.edge { stroke: var(--line); stroke-width: 1.6; }
+#edges line.hit { stroke: transparent; stroke-width: 12; cursor: pointer; }
+#edges g.selected line.edge { stroke: var(--accent); stroke-width: 2.5; }
+#edges g.user line.edge { stroke-dasharray: 6 3; }
+#edges .arrowhead { fill: var(--line); }
+#edges text { fill: var(--muted); font-size: 12px; paint-order: stroke; stroke: var(--bg); stroke-width: 4px; }
+
+.node {
+  position: absolute; display: flex; flex-direction: column;
+  background: var(--note); border: 1.5px solid var(--border); border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08); cursor: move; user-select: none;
+}
+.node.group { background: transparent; border-style: dashed; box-shadow: none; }
+.node.question { background: var(--question); }
+.node.answer { background: var(--answer); }
+.node.suggestion { background: var(--suggestion); border-style: dashed; }
+.node.selected { outline: 2px solid var(--accent); outline-offset: 2px; }
+.node.pick { outline: 2px dashed var(--accent); outline-offset: 2px; }
+.node.c1 { border-color: var(--c1); } .node.c2 { border-color: var(--c2); } .node.c3 { border-color: var(--c3); }
+.node.c4 { border-color: var(--c4); } .node.c5 { border-color: var(--c5); } .node.c6 { border-color: var(--c6); }
+.node .body {
+  flex: 1; overflow: auto; padding: 8px 10px; white-space: pre-wrap; word-break: break-word;
+}
+.node .body.diagram { white-space: normal; display: flex; align-items: center; justify-content: center; }
+.node .body.diagram svg { max-width: 100%; height: auto; }
+.node .group-label { position: absolute; top: -22px; left: 4px; color: var(--muted); font-weight: 600; }
+.node pre.source { margin: 6px 0 0; font-size: 12px; white-space: pre-wrap; }
+.node .render-error { color: var(--error); font-size: 12px; }
+.node textarea.editor {
+  flex: 1; margin: 4px; resize: none; font: inherit; color: var(--ink);
+  background: var(--panel); border: 1px solid var(--accent); border-radius: 6px; padding: 6px;
+}
+.node .handle {
+  position: absolute; right: -1px; bottom: -1px; width: 14px; height: 14px; cursor: nwse-resize;
+  border-right: 3px solid var(--line); border-bottom: 3px solid var(--line); border-bottom-right-radius: 7px;
+}
+.node .lock {
+  position: absolute; top: -11px; right: 8px; display: flex; gap: 4px; align-items: center;
+  font-size: 11px; color: var(--user); background: var(--panel);
+  border: 1px solid var(--user); border-radius: 10px; padding: 0 6px;
+}
+.node .lock button { font-size: 11px; padding: 0 4px; border: none; background: transparent; color: var(--accent); }
+.node .answer-box { display: flex; gap: 4px; padding: 6px; border-top: 1px solid var(--border); }
+.node .answer-box input {
+  flex: 1; min-width: 0; font: inherit; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px;
+}
+.hint {
+  position: absolute; left: 50%; top: 10px; transform: translateX(-50%);
+  background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+  padding: 4px 10px; color: var(--muted); display: none;
+}
+.hint.show { display: block; }
+
+.chat { background: var(--panel); border-top: 1px solid var(--border); }
+.chat-log { max-height: 28vh; overflow-y: auto; padding: 6px 12px; display: flex; flex-direction: column; gap: 4px; }
+.chat-log:empty { display: none; }
+.msg { max-width: 80%; padding: 5px 9px; border-radius: 8px; white-space: pre-wrap; word-break: break-word; }
+.msg.user { align-self: flex-end; background: var(--accent); color: #fff; }
+.msg.claude { align-self: flex-start; background: var(--bg); border: 1px solid var(--border); }
+.chat-form { display: flex; gap: 8px; padding: 8px 12px; }
+.chat-form textarea {
+  flex: 1; resize: none; font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; max-height: 120px;
+}

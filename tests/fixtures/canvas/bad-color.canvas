@@ -1,0 +1,6 @@
+{
+  "nodes": [
+    { "id": "a", "type": "text", "x": 0, "y": 0, "width": 100, "height": 50, "text": "one", "color": "7" },
+    { "id": "b", "type": "text", "x": 200, "y": 0, "width": 100, "height": 50, "text": "two", "color": "red" }
+  ]
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="bwc-token" content="__BWC_TOKEN__">
+<meta name="bwc-project" content="__BWC_PROJECT__">
+<title>Brainstorm board</title>
+<link rel="stylesheet" href="/static/board.css">
+<script src="/vendor/mermaid/mermaid.min.js" defer></script>
+<script src="/static/board.js" defer></script>
+</head>
+<body>
+<header class="bar">
+  <span class="title">Board: <strong id="project-name"></strong></span>
+  <span id="status" class="status">connecting</span>
+  <span class="spacer"></span>
+  <button id="btn-note" type="button" title="Add a sticky note">New note</button>
+  <button id="btn-connect" type="button" title="Click two items to connect them">Connect</button>
+  <button id="btn-fit" type="button" title="Fit everything in view">Fit</button>
+  <button id="btn-end" type="button" title="Tell Claude the session is over">End session</button>
+</header>
+<main id="viewport" tabindex="0" aria-label="Board canvas">
+  <div id="world">
+    <svg id="edges" aria-hidden="true">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="arrowhead"></path>
+        </marker>
+      </defs>
+      <g id="edge-layer"></g>
+    </svg>
+    <div id="node-layer"></div>
+  </div>
+  <div id="hint" class="hint"></div>
+</main>
+<section class="chat" aria-label="Chat with Claude">
+  <div id="chat-log" class="chat-log" aria-live="polite"></div>
+  <form id="chat-form" class="chat-form">
+    <textarea id="chat-input" rows="1" placeholder="Type to Claude. Enter sends, Shift+Enter for a new line."></textarea>
+    <button type="submit">Send</button>
+  </form>
+</section>
+</body>
+</html>

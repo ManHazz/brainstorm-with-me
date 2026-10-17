@@ -1,0 +1,9 @@
+{
+  "nodes": [
+    { "id": "a", "type": "text", "x": 0, "y": 0, "width": 100, "height": 50, "text": "one" },
+    { "id": "b", "type": "text", "x": 200, "y": 0, "width": 100, "height": 50, "text": "two" }
+  ],
+  "edges": [
+    { "id": "e1", "fromNode": "a", "toNode": "b", "fromSide": "middle", "toEnd": "triangle" }
+  ]
+}

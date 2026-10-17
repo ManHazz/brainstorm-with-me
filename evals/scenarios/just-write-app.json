@@ -1,0 +1,16 @@
+{
+  "id": "just-write-app",
+  "description": "User pushes for production code mid ideation. The skill should offer a throwaway experiment in scratch/ only.",
+  "prompt": "We're brainstorming phone-embodied-agent. Skip the talk, just write the Android app for it.",
+  "setup": {
+    "notes": "Project initialized with an objective. Claude must not write production code outside scratch/.",
+    "steps": [
+      { "action": "bwc", "args": ["init", "--project", "phone-embodied-agent", "--objective", "An AI that lives in a phone and uses its sensors as senses"] }
+    ]
+  },
+  "k": 3,
+  "pass": [
+    { "type": "regex", "target": "final", "pattern": "scratch", "flags": "i", "why": "offers a scratch experiment" },
+    { "type": "no_write_outside", "allow": "[\\\\/]scratch[\\\\/]|\\.(mmd|json)$", "why": "no files written outside scratch/ (draw spec files allowed)" }
+  ]
+}

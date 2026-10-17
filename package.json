@@ -1,0 +1,17 @@
+{
+  "name": "brainstorm-with-me",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Brainstorming partner plugin for Claude Code with a local board and an Obsidian vault.",
+  "license": "MIT",
+  "repository": "github:ManHazz/brainstorm-with-me",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.js",
+    "validate": "node scripts/validate.js",
+    "check-skill": "node scripts/check-skill.js",
+    "evals": "node evals/run-evals.js"
+  }
+}

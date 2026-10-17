@@ -1,0 +1,15 @@
+{
+  "id": "unclear-objective",
+  "description": "Vague goal with no shape. The skill should ask exactly one question and not draw a guess.",
+  "prompt": "Let's brainstorm. I need a final year project, something with AI. Help me.",
+  "setup": {
+    "notes": "Fresh BWC_HOME and BWC_VAULT. No project exists yet.",
+    "steps": []
+  },
+  "k": 3,
+  "pass": [
+    { "type": "question_count", "target": "final", "min": 1, "max": 1, "why": "exactly one question" },
+    { "type": "not_regex", "target": "final", "pattern": "^\\s*(\\d+[.)]|[-*])\\s+[^\\n]*\\?\\s*$", "flags": "m", "why": "no list of questions" },
+    { "type": "not_tool", "tool": "Bash", "pattern": "bwc\\.js\"?\\s+draw", "why": "does not draw a guess" }
+  ]
+}

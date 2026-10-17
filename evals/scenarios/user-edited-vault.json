@@ -1,0 +1,21 @@
+{
+  "id": "user-edited-vault",
+  "description": "The user edited decisions.md by hand. Adding a decision must merge, or Claude must ask, and the user's line must survive.",
+  "prompt": "For phone-embodied-agent, record the decision: the reflex layer runs on device and the LLM runs in the cloud.",
+  "setup": {
+    "notes": "Project initialized with one decision, then the user appended a line to decisions.md outside the plugin.",
+    "steps": [
+      { "action": "bwc", "args": ["init", "--project", "phone-embodied-agent"] },
+      { "action": "bwc", "args": ["decide", "--project", "phone-embodied-agent", "--text", "Use the phone I already own"] },
+      { "action": "append_vault", "project": "phone-embodied-agent", "file": "decisions.md", "content": "\n- 2026-10-17: My own note, typed by hand. Keep this.\n" }
+    ]
+  },
+  "k": 3,
+  "pass": [
+    { "type": "any", "why": "merged, or reported a conflict, or asked the user", "checks": [
+      { "type": "regex", "target": "transcript", "pattern": "\"status\"\\s*:\\s*\"(merged|conflict)\"" },
+      { "type": "question_count", "target": "final", "min": 1 }
+    ] },
+    { "type": "vault_contains", "project": "phone-embodied-agent", "file": "decisions.md", "text": "My own note, typed by hand. Keep this.", "why": "user line survives" }
+  ]
+}

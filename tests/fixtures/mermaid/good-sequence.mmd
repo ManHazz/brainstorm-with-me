@@ -1,0 +1,15 @@
+---
+title: Login
+---
+sequenceDiagram
+  participant U as User
+  participant S as Server
+  U->>S: login (with token :)
+  alt ok
+    S-->>U: 200
+  else fail
+    S-->>U: 401
+  end
+  loop every minute
+    U->>S: ping
+  end

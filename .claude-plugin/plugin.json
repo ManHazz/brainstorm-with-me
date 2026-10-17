@@ -1,0 +1,27 @@
+{
+  "name": "brainstorm-with-me",
+  "version": "0.1.0",
+  "description": "Brainstorming partner for Claude Code. Claude draws mermaid diagrams and sticky notes on a local board, you type and edit, and everything lands in your Obsidian vault so nothing is lost between sessions.",
+  "author": {
+    "name": "ManHazz", "url": "https://github.com/ManHazz"
+  },
+  "homepage": "https://github.com/ManHazz/brainstorm-with-me",
+  "repository": "https://github.com/ManHazz/brainstorm-with-me",
+  "license": "MIT",
+  "keywords": [
+    "brainstorming",
+    "ideation",
+    "whiteboard",
+    "mermaid",
+    "obsidian",
+    "json-canvas",
+    "critique",
+    "project-ideas"
+  ],
+  "skills": [
+    "./skills/"
+  ],
+  "commands": [
+    "./commands/"
+  ]
+}

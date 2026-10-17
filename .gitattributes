@@ -1,0 +1,3 @@
+* text=auto eol=lf
+*.min.js -text
+*.canvas text eol=lf

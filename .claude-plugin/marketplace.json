@@ -1,0 +1,28 @@
+{
+  "name": "brainstorm-with-me",
+  "owner": {
+    "name": "ManHazz"
+  },
+  "metadata": {
+    "description": "Local brainstorming board and idea vault for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "brainstorm-with-me",
+      "source": "./",
+      "description": "Brainstorm with Claude on a local board: diagrams, sticky notes, a concept brief, an honest critic, and session notes saved to your vault.",
+      "version": "0.1.0",
+      "author": {
+        "name": "ManHazz"
+      },
+      "license": "MIT",
+      "keywords": [
+        "brainstorming",
+        "ideation",
+        "whiteboard",
+        "obsidian"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

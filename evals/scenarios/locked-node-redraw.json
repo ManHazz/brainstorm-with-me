@@ -1,0 +1,19 @@
+{
+  "id": "locked-node-redraw",
+  "description": "The user edited a node, which locks it. A full redraw must leave it untouched, shown by skippedLocked in the draw report.",
+  "prompt": "Redraw the phone-embodied-agent board as a tidy left to right architecture: senses, reflex layer, attention gate (keep id gate), LLM brain. Rename the gate to 'Salience filter'.",
+  "setup": {
+    "notes": "Board has a Claude drawn flow, then the user edited node 'gate' (now user owned and locked).",
+    "steps": [
+      { "action": "bwc", "args": ["init", "--project", "phone-embodied-agent"] },
+      { "action": "write_temp", "name": "spec.json", "content": "{\"nodes\":[{\"id\":\"senses\",\"type\":\"text\",\"x\":0,\"y\":0,\"width\":280,\"height\":160,\"text\":\"Senses\"},{\"id\":\"gate\",\"type\":\"text\",\"x\":320,\"y\":0,\"width\":280,\"height\":160,\"text\":\"Attention gate\"}],\"edges\":[{\"id\":\"e1\",\"fromNode\":\"senses\",\"toNode\":\"gate\"}]}" },
+      { "action": "bwc", "args": ["draw", "--project", "phone-embodied-agent", "--spec", "{temp}/spec.json"] },
+      { "action": "user_edit", "project": "phone-embodied-agent", "edit": { "id": "gate", "text": "Attention gate (tiny classifier, mine)" } }
+    ]
+  },
+  "k": 3,
+  "pass": [
+    { "type": "regex", "target": "transcript", "pattern": "\"skippedLocked\"\\s*:\\s*\\[[^\\]]*\"gate\"", "why": "draw report lists the locked node" },
+    { "type": "board_text", "project": "phone-embodied-agent", "id": "gate", "equals": "Attention gate (tiny classifier, mine)", "why": "locked node text unchanged" }
+  ]
+}

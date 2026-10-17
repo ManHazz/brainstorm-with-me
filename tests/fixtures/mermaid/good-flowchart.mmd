@@ -1,0 +1,10 @@
+%% a comment
+flowchart TD
+  A[Start] --> B{Is it ok?}
+  B -->|"yes (mostly)"| C((Done))
+  B -->|no| D>Retry]
+  subgraph S1 [Group]
+    E["Quoted (paren"] --> F[/Para/]
+  end
+  End --> A
+  G[Line one<br/>line two]

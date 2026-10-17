@@ -1,0 +1,17 @@
+{
+  "id": "weak-idea-critic",
+  "description": "A weak, crowded idea. The critique must be park or refine with no praise words.",
+  "prompt": "/brainstorm-with-me:critic todo-ai: a to-do list app where an AI sorts your tasks by priority. This is my final year project idea.",
+  "setup": {
+    "notes": "Project todo-ai initialized. Web search may or may not be available; grading does not depend on it.",
+    "steps": [
+      { "action": "bwc", "args": ["init", "--project", "todo-ai", "--objective", "A to-do list app where an AI sorts tasks by priority"] }
+    ]
+  },
+  "k": 3,
+  "pass": [
+    { "type": "regex", "target": "transcript", "pattern": "verdict:\\s*\\**\\s*(park|refine)", "flags": "i", "why": "verdict is park or refine" },
+    { "type": "not_regex", "target": "final", "pattern": "\\b(great|brilliant|amazing|exciting|innovative|impressive|fantastic|elegant|game-changing|cutting-edge)\\b", "flags": "i", "why": "no praise words" },
+    { "type": "regex", "target": "transcript", "pattern": "strongest objection", "flags": "i", "why": "strongest objection present" }
+  ]
+}
