@@ -4,7 +4,7 @@
 // plus a copy of that content (base, in .bwc-base/) so we can tell when the user
 // edited a file and do a 3-way merge. User edits are never overwritten silently.
 //
-// Every read-modify-write runs under a per-project lock file so parallel bwc
+// Every read-modify-write runs under a per-project lock file so parallel bwm
 // processes cannot lose appends or clobber the manifest. We never write through a
 // symlink or junction, and we keep the file's line endings (CRLF stays CRLF).
 

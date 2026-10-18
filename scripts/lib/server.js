@@ -442,7 +442,7 @@ function createBoardServer() {
     }
 
     if (parts[0] === 'api') {
-      // health answers without a token so another bwc can tell we are here
+      // health answers without a token so another bwm can tell we are here
       if (parts[1] === 'health' && parts.length === 2 && req.method === 'GET') {
         const out = { ok: true, app: APP };
         if (tokenOk(req)) Object.assign(out, { pid: process.pid, port });
@@ -469,7 +469,7 @@ function createBoardServer() {
       return;
     }
     if (parts[0] === 'p' && parts.length === 2 && validProject(parts[1])) {
-      if (!project(parts[1], false)) return fail(res, 404, 'no such project, run bwc open first');
+      if (!project(parts[1], false)) return fail(res, 404, 'no such project, run bwm open first');
       if (!url.pathname.endsWith('/')) {
         res.writeHead(302, { Location: `/p/${parts[1]}/`, 'Cache-Control': 'no-store' });
         return res.end();
@@ -525,7 +525,7 @@ function createBoardServer() {
         return port;
       } catch (err) {
         if (err.code !== 'EADDRINUSE' && err.code !== 'EACCES') throw err;
-        // the port belongs to another bwc server: use that one, do not start a second
+        // the port belongs to another bwm server: use that one, do not start a second
         if (p !== 0 && await probe(p)) throw Object.assign(new Error(`a board server already runs on port ${p}`), { code: 'BWC_RUNNING', port: p });
       }
     }

@@ -14,16 +14,16 @@ objective. If no project was given, ask for a name (one question).
 
 ## Steps
 
-1. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" status --project <p>`
+1. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" status --project <p>`
    - If the project already exists, switch to the pickup procedure
      (`/brainstorm-with-me:pickup`) instead.
    - The vault folder needs no setup (default `~/Documents/brainstorm-vault`,
      created on first use). Do not ask about it. Mention where it is once.
-2. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" init --project <p> --objective "<objective>"` (leave out
+2. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" init --project <p> --objective "<objective>"` (leave out
    `--objective` if none was given).
 3. If there is an objective, draw a small first picture: write a `.mmd` file
    with the objective and 2 to 4 open questions around it, run
-   `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" draw --project <p> --spec <file>`, and show the same mermaid block in
+   `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" draw --project <p> --spec <file>`, and show the same mermaid block in
    your reply. If there is no objective, ask the one question that pins it down
    (see `skills/brainstorm-with-me/references/ideation-rules.md`).
 4. Tell the user in one line that `/brainstorm-with-me:board` opens a

@@ -10,9 +10,9 @@ Thin entrypoint over the `brainstorm-with-me` skill. Procedure is in
 
 ## Steps
 
-1. Project from $ARGUMENTS. If empty, run `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" status` and use the most
+1. Project from $ARGUMENTS. If empty, run `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" status` and use the most
    recent project, or ask if there are several.
-2. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" pickup --project <p>`: latest wrap, brief, open questions.
+2. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" pickup --project <p>`: latest wrap, brief, open questions.
 3. Run the drift check from `skills/brainstorm-with-me/references/brief-template.md` (max 3 flags).
 4. Do not open the board. If the user asks for it, use
    `/brainstorm-with-me:board`.

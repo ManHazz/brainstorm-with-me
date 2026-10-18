@@ -14,7 +14,7 @@ These answer the open questions at the bottom and record other changes:
   up later. Only `/board` opens a browser.
 - **Vault is a plain folder.** Default `~/Documents/brainstorm-vault`, created
   on demand, no setup step. Obsidian is optional, just a nice way to browse it.
-  `BWC_VAULT` or `bwc config --vault` moves it.
+  `BWC_VAULT` or `bwm config --vault` moves it.
 - **Export.** `board.canvas` is the default. The mermaid note
   (`board-diagrams.md`) is opt-in (`--mermaid` or `exportMermaidNote`).
 - **Critic web search is on.** The critic may use WebSearch and WebFetch for
@@ -70,7 +70,7 @@ brainstorm-with-me/
   commands/  start, board, brief, critic, wrap, pickup, status (.md)
   agents/idea-critic.md          read-only critic
   hooks/hooks.json               Stop hook: undelivered board input
-  scripts/bwc.js                 single CLI
+  scripts/bwm.js                 single CLI
   scripts/lib/  server, board-model, merge, diff, vault, safe-write, config,
                 canvas-export, canvas-validate, mermaid-lint, mermaid-deep
   scripts/validate.js            .canvas + mermaid validator
@@ -88,15 +88,15 @@ No npm runtime dependencies. Works the same on Windows, macOS and Linux.
 
 ## 1. Board
 
-- Server: `node:http`, binds 127.0.0.1 only, port 4527 (falls back up to 4536, then random). Runs detached. Exits after 30 idle minutes or on `bwc stop`.
+- Server: `node:http`, binds 127.0.0.1 only, port 4527 (falls back up to 4536, then random). Runs detached. Exits after 30 idle minutes or on `bwm stop`.
 - State: `~/.claude/brainstorm-with-me/state/<project>/board.json`, atomic writes.
 - Model: JSON Canvas 1.0 nodes and edges, each with extra `meta { owner: claude|user, locked, rev, kind: note|diagram|question|answer }`. Export strips `meta`, so the `.canvas` file is plain spec.
 - Mermaid diagram = a text node holding a mermaid code block. The page renders it with vendored mermaid; Obsidian renders the same node natively. Sticky notes are plain text nodes.
-- Claude draws with `bwc draw --spec file.json|file.mmd`. Merge by id: add new, update Claude-owned unlocked items, never touch user-owned or locked items. If Claude wants to change a locked item, it adds a linked suggestion note instead. Prints added / updated / skipped.
+- Claude draws with `bwm draw --spec file.json|file.mmd`. Merge by id: add new, update Claude-owned unlocked items, never touch user-owned or locked items. If Claude wants to change a locked item, it adds a linked suggestion note instead. Prints added / updated / skipped.
 - Turn taking: Claude draws, then yields. Any user move, resize or edit locks that item to the user. The user can unlock it ("let Claude rearrange").
-- User input back: `bwc await` long-polls and runs as background Bash, so a reply wakes Claude. Output: `{ user_said, diff, rev }`. The skill treats `user_said` as the user's own words, quoted verbatim.
+- User input back: `bwm await` long-polls and runs as background Bash, so a reply wakes Claude. Output: `{ user_said, diff, rev }`. The skill treats `user_said` as the user's own words, quoted verbatim.
 - Semantic diff vs last delivered rev: edit_text, add_note, delete, connect, disconnect, answer, render_error. Moves and resizes collapse into a one-line summary.
-- Backstop: `bwc pending`, and a Stop hook that blocks ending a turn while board input is undelivered.
+- Backstop: `bwm pending`, and a Stop hook that blocks ending a turn while board input is undelivered.
 - Security: Host header must be 127.0.0.1 or localhost (DNS rebinding), Origin check on POST, per-start random token on every write, JSON only, no CORS, CSP `default-src 'self'`, text set via textContent, mermaid `securityLevel: 'strict'`. No outbound requests, no telemetry, no secrets stored.
 
 ## 2. Concept brief
@@ -132,7 +132,7 @@ No npm runtime dependencies. Works the same on Windows, macOS and Linux.
 
 - Canvas: allowed keys, unique ids, valid types and required fields, integer geometry, edges point at real nodes, valid sides, ends and colors.
 - Mermaid: offline structural lint (known header, balanced brackets, quotes and subgraph/end, valid ids, arrow syntax, no HTML or script). The board page also runs real `mermaid.parse` and reports errors back as `render_error`. `--deep` adds a real parse in Node (see decisions above).
-- CLI: exit 0 or 1, text or JSON. `bwc draw` runs it before accepting a spec.
+- CLI: exit 0 or 1, text or JSON. `bwm draw` runs it before accepting a spec.
 
 ## Testing
 
@@ -151,7 +151,7 @@ No npm runtime dependencies. Works the same on Windows, macOS and Linux.
 
 ## Risks
 
-- Background `await` waking Claude is the fragile link. Backstops: Stop hook, `bwc pending`, `status`.
+- Background `await` waking Claude is the fragile link. Backstops: Stop hook, `bwm pending`, `status`.
 - Claude Code cannot inject a real user message. Board input arrives as tool output marked as the user's words. Documented as a known limitation.
 - Mermaid bundle about 3 MB and version drift. Pin version, check sha256 in tests.
 - Sync tools writing mid-save. Hash check, atomic rename, conflict file.

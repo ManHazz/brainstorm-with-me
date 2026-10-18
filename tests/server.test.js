@@ -7,7 +7,7 @@ const path = require('node:path');
 const http = require('node:http');
 const { spawn, execFile } = require('node:child_process');
 
-const BWC = path.join(__dirname, '..', 'scripts', 'bwc.js');
+const BWC = path.join(__dirname, '..', 'scripts', 'bwm.js');
 
 function tempEnv(extra) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bwc- server '));
@@ -404,12 +404,12 @@ test('pending skips odd dirs and caps hook text across projects', async () => {
   assert.match(out.reason, /await --project "beta"/);
 });
 
-test('bwc.js works without cli-vault but surfaces real load errors', async () => {
+test('bwm.js works without cli-vault but surfaces real load errors', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bwc- dispatch '));
   fs.mkdirSync(path.join(dir, 'lib'));
-  fs.copyFileSync(BWC, path.join(dir, 'bwc.js'));
+  fs.copyFileSync(BWC, path.join(dir, 'bwm.js'));
   fs.writeFileSync(path.join(dir, 'lib', 'cli-board.js'), "module.exports = { commands: { ping: async () => ({ pong: true }) } };\n");
-  const run = () => new Promise((resolve) => execFile(process.execPath, [path.join(dir, 'bwc.js'), 'ping'], (err, stdout, stderr) => resolve({ code: err ? err.code : 0, stdout, stderr })));
+  const run = () => new Promise((resolve) => execFile(process.execPath, [path.join(dir, 'bwm.js'), 'ping'], (err, stdout, stderr) => resolve({ code: err ? err.code : 0, stdout, stderr })));
   const ok = await run();
   assert.equal(JSON.parse(ok.stdout).pong, true);
   fs.writeFileSync(path.join(dir, 'lib', 'cli-vault.js'), "require('./does-not-exist');\n");
@@ -418,7 +418,7 @@ test('bwc.js works without cli-vault but surfaces real load errors', async () =>
   assert.match(broken.stderr, /does-not-exist/);
 });
 
-test('does not walk past a port held by another bwc server', async () => {
+test('does not walk past a port held by another bwm server', async () => {
   const { env } = tempEnv();
   const { child, info } = await startServer(env);
   t_cleanup.push(() => child.kill());

@@ -2,7 +2,7 @@
 
 One `brief.md` per project. It is the anchor for drift checks, so keep it short
 and honest. Edit one section at a time with
-`bwc brief --project <p> --section "<Section>" --text "..."`. Never regenerate
+`bwm brief --project <p> --section "<Section>" --text "..."`. Never regenerate
 the whole file.
 
 ## Shape

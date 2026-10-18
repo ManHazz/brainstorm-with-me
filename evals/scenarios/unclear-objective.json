@@ -10,6 +10,6 @@
   "pass": [
     { "type": "question_count", "target": "final", "min": 1, "max": 1, "why": "exactly one question" },
     { "type": "not_regex", "target": "final", "pattern": "^\\s*(\\d+[.)]|[-*])\\s+[^\\n]*\\?\\s*$", "flags": "m", "why": "no list of questions" },
-    { "type": "not_tool", "tool": "Bash", "pattern": "bwc\\.js\"?\\s+draw", "why": "does not draw a guess" }
+    { "type": "not_tool", "tool": "Bash", "pattern": "bwm\\.js\"?\\s+draw", "why": "does not draw a guess" }
   ]
 }

@@ -3,8 +3,8 @@
 ## Wrap
 
 At the end of a session, write this to a temp file and save it with
-`bwc wrap --project <p> --file <file>`. It lands in
-`sessions/YYYY-MM-DD-HHMM-wrap.md`. Then run `bwc export --project <p>` so
+`bwm wrap --project <p> --file <file>`. It lands in
+`sessions/YYYY-MM-DD-HHMM-wrap.md`. Then run `bwm export --project <p>` so
 `board.canvas` matches the board. Add `--mermaid` only if the user asked for a
 mermaid note; that also writes `board-diagrams.md`.
 
@@ -49,7 +49,7 @@ Before writing it:
 When the user comes back (`/brainstorm-with-me:pickup` or "where were
 we?"):
 
-1. `bwc pickup --project <p>`: returns the latest wrap, the brief, and open
+1. `bwm pickup --project <p>`: returns the latest wrap, the brief, and open
    questions.
 2. Read the latest wrap's "Where we are" and "Next step".
 3. Read the open questions, newest and unresolved first.

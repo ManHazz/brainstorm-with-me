@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js\" pending --hook",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js\" pending --hook",
             "timeout": 10
           }
         ]

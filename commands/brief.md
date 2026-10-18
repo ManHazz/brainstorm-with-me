@@ -10,11 +10,11 @@ in `skills/brainstorm-with-me/references/brief-template.md`.
 
 ## Steps
 
-1. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" brief --project <p>` to read the current brief.
+1. `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" brief --project <p>` to read the current brief.
 2. If $ARGUMENTS names a section (Objective, Scope, Non-goals, Success metric,
    Kill criterion), draft the new text for that section only, show it, and on
    approval run
-   `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" brief --project <p> --section "<Section>" --text "<text>"`.
+   `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" brief --project <p> --section "<Section>" --text "<text>"`.
 3. If no arguments: show the brief briefly, point out empty sections, and run
    the drift check (max 3 flags).
 4. Never rewrite the whole brief. One section per call.

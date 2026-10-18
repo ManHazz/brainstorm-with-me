@@ -3,7 +3,7 @@
 Everything persistent lives in the vault: a plain folder of markdown files plus
 a `board.canvas`. No app is required. The default is
 `~/Documents/brainstorm-vault`, created on first use with no setup step. To
-move it: `bwc config --vault "<path>" [--create]`. The `BWC_VAULT` env var
+move it: `bwm config --vault "<path>" [--create]`. The `BWC_VAULT` env var
 overrides both.
 
 Viewing is up to the user. Open the folder in Obsidian if they have it (the
@@ -35,7 +35,7 @@ The folder name `Brainstorm` is configurable (`folder` in config).
 - **board.canvas**: JSON Canvas 1.0 export of the board. Plain spec, no plugin
   metadata, so any JSON Canvas viewer (Obsidian, for one) opens it. Edits made
   to it outside the plugin are re-imported as user-owned, locked items.
-- **board-diagrams.md**: optional. Written only by `bwc export --project <p> --mermaid`,
+- **board-diagrams.md**: optional. Written only by `bwm export --project <p> --mermaid`,
   when the user asks for a mermaid note. Each diagram from the board as a
   fenced block, plus sticky notes as bullets. Readable anywhere mermaid renders.
 - **decisions.md**: append only. One entry per decision:

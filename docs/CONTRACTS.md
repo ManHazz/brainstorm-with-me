@@ -75,9 +75,9 @@ Project files: `brief.md`, `board.canvas`, `board-diagrams.md`, `decisions.md`, 
 
 Exports: `initProject(project, { objective? })`, `readBrief(project)`, `updateBriefSection(project, section, text)` (in place, one section), `addDecision(project, text)`, `addOpenQuestion(project, text)`, `resolveQuestion(project, id, note)`, `addRejected(project, text, reason)`, `saveCritique(project, idea, markdown)`, `writeWrap(project, markdown)`, `latestWrap(project)`, `exportBoard(project, board)`, `status(project)`.
 
-## CLI (`scripts/bwc.js`)
+## CLI (`scripts/bwm.js`)
 
-Single entry: `node scripts/bwc.js <cmd>`. JSON on stdout, progress on stderr. Dispatcher only; logic lives in `scripts/lib/cli-board.js` and `scripts/lib/cli-vault.js`, each exporting `{ commands: { name: async (args) => result } }`.
+Single entry: `node scripts/bwm.js <cmd>`. JSON on stdout, progress on stderr. Dispatcher only; logic lives in `scripts/lib/cli-board.js` and `scripts/lib/cli-vault.js`, each exporting `{ commands: { name: async (args) => result } }`.
 
 Board (`cli-board.js`): `open [--project p] [--no-open]`, `draw --project p --spec <file.json|file.mmd>`, `await --project p [--reply "text"] [--timeout-ms n]`, `pending [--hook]`, `unlock --project p --id x`, `stop`, `server` (foreground).
 Vault (`cli-vault.js`): `init --project p [--objective t]`, `brief --project p [--section S --text T]`, `decide --project p --text t`, `question --project p --text t`, `resolve --project p --id x [--note t]`, `reject --project p --text t --reason r`, `critique-save --project p --idea I --file f`, `wrap --project p --file f`, `pickup --project p`, `export --project p`, `status [--project p]`, `config [--vault path]`.

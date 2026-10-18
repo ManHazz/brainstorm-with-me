@@ -18,7 +18,7 @@ const { spawnSync } = require('node:child_process');
 
 const ROOT = path.join(__dirname, '..');
 const SCENARIO_DIR = path.join(__dirname, 'scenarios');
-const BWC = path.join(ROOT, 'scripts', 'bwc.js');
+const BWC = path.join(ROOT, 'scripts', 'bwm.js');
 
 const CHECK_TYPES = new Set([
   'regex', 'not_regex', 'question_count', 'not_tool', 'no_write_outside',
@@ -27,9 +27,9 @@ const CHECK_TYPES = new Set([
 const SETUP_ACTIONS = new Set(['bwc', 'write_temp', 'user_edit', 'append_vault']);
 // Bash is limited to the plugin CLI and the validator. Patterns use Claude
 // Code permission rule wildcards and match both the raw command
-// (node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" ...) and the expanded path.
+// (node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" ...) and the expanded path.
 const ALLOWED_TOOLS = [
-  'Bash(node *scripts/bwc.js*)',
+  'Bash(node *scripts/bwm.js*)',
   'Bash(node *scripts/validate.js*)',
   'Read', 'Write', 'Edit', 'Glob', 'Grep', 'Task', 'Agent',
 ];

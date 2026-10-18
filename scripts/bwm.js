@@ -2,7 +2,7 @@
 'use strict';
 // brainstorm-with-me CLI. JSON on stdout, progress on stderr.
 
-const HELP = `usage: node scripts/bwc.js <command> [--flag value ...]
+const HELP = `usage: node scripts/bwm.js <command> [--flag value ...]
 
 board:
   open [--project p] [--no-open]           start the board server and open the page

@@ -52,7 +52,7 @@ function readText(file) {
 function requireProject(project) {
   const dir = dirFor(project);
   if (!fs.existsSync(path.join(dir, 'brief.md'))) {
-    throw new Error(`project "${config.slug(project)}" not set up yet: run \`bwc init --project ${config.slug(project)}\``);
+    throw new Error(`project "${config.slug(project)}" not set up yet: run \`bwm init --project ${config.slug(project)}\``);
   }
   return dir;
 }

@@ -1,12 +1,12 @@
 # Board protocol
 
-How you talk to the board. All commands are `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" <cmd>`,
-written `bwc <cmd>` here. Output is JSON on stdout.
+How you talk to the board. All commands are `node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" <cmd>`,
+written `bwm <cmd>` here. Output is JSON on stdout.
 
 ## Open
 
 ```bash
-bwc open --project phone-embodied-agent
+bwm open --project phone-embodied-agent
 ```
 
 Starts the local server if needed (127.0.0.1, port 4527 or the next free one)
@@ -18,7 +18,7 @@ launching the browser.
 Write the spec to a temp file, then:
 
 ```bash
-bwc draw --project phone-embodied-agent --spec /tmp/bwc-spec.json
+bwm draw --project phone-embodied-agent --spec /tmp/bwc-spec.json
 ```
 
 The spec is a JSON Canvas style object. `meta` is optional; the CLI fills it in
@@ -59,7 +59,7 @@ Rules for specs:
 A `.mmd` file becomes one diagram node (a text node holding a mermaid block):
 
 ```bash
-bwc draw --project phone-embodied-agent --spec /tmp/arch.mmd
+bwm draw --project phone-embodied-agent --spec /tmp/arch.mmd
 ```
 
 ```
@@ -89,7 +89,7 @@ back as `render_error`.
 Run in the background (Bash tool, `run_in_background: true`):
 
 ```bash
-bwc await --project phone-embodied-agent
+bwm await --project phone-embodied-agent
 ```
 
 Returns when the user does something:
@@ -115,7 +115,7 @@ or `{ "status": "ended" }` when the user closes the session.
 
 - `user_said` is the user's words. Quote verbatim.
 - Options: `--reply "text"` posts your reply on the board, `--timeout-ms n`.
-- `bwc pending` returns anything queued but not delivered (use it after an
+- `bwm pending` returns anything queued but not delivered (use it after an
   interruption).
 
 ## Diff ops
@@ -136,11 +136,11 @@ change is capped at 2000 characters.
 ## Locks
 
 - Any user move, resize, or edit sets `owner: "user"` and `locked: true`.
-- `bwc draw` never changes a locked or user-owned item. Not text, not position,
+- `bwm draw` never changes a locked or user-owned item. Not text, not position,
   not color.
 - To change one, let the draw add a suggestion note, or ask the user.
 - Unlock: the user clicks unlock on the board, or you run
-  `bwc unlock --project <p> --id <id>` after the user says so.
+  `bwm unlock --project <p> --id <id>` after the user says so.
 
 ## Suggestion notes
 

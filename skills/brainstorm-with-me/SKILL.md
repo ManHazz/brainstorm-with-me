@@ -1,6 +1,6 @@
 ---
 name: brainstorm-with-me
-description: Brainstorming partner that works in the terminal, with an optional local board and a plain markdown vault folder. Use when the user wants to brainstorm, explore or shape a project idea, says "draw this" or "sketch it", asks for a concept brief, wants an idea critiqued honestly, or wants to wrap up or pick up a brainstorm from an earlier session.
+description: Brainstorming partner for the start of a project, when the idea is unsettled or doesn't exist yet: the user is musing, comparing options, or has nothing in mind and wants help finding a direction. Also for sketches, concept briefs, honest critique of an idea, or resuming an earlier brainstorm. Not for implementing a settled design, debugging, or factual questions.
 metadata:
   version: "0.1.0"
 ---
@@ -17,10 +17,10 @@ markdown, so the next session starts where this one stopped.
 All CLI calls in this skill use:
 
 ```bash
-node "${CLAUDE_PLUGIN_ROOT}/scripts/bwc.js" <cmd> ...
+node "${CLAUDE_PLUGIN_ROOT}/scripts/bwm.js" <cmd> ...
 ```
 
-Below, `bwc <cmd>` is short for that line. Every command prints JSON on stdout.
+Below, `bwm <cmd>` is short for that line. Every command prints JSON on stdout.
 
 ## When to Activate
 
@@ -39,17 +39,17 @@ Do not activate for: implementing a settled design, debugging, code review.
 
 ### 1. Pick up or start
 
-- Run `bwc status --project <p>`. If the project exists, follow the pickup
+- Run `bwm status --project <p>`. If the project exists, follow the pickup
   procedure in `references/session-notes.md`. If not, run
-  `bwc init --project <p> [--objective "..."]`.
+  `bwm init --project <p> [--objective "..."]`.
 - The vault folder needs no setup. It defaults to `~/Documents/brainstorm-vault`
   and is created on first use. Only if the user wants it elsewhere:
-  `bwc config --vault "<path>" [--create]`.
+  `bwm config --vault "<path>" [--create]`.
 - Do not open the board here. The board is opt in (see step 4).
 
 ### 2. Drift check
 
-On start and pickup, read the brief (`bwc brief --project <p>`) and compare
+On start and pickup, read the brief (`bwm brief --project <p>`) and compare
 recent diagrams and decisions against Objective and Non-goals. Report at most
 3 flags, one line each. No flags means say nothing about drift. The full
 procedure is in `references/brief-template.md`.
@@ -57,7 +57,7 @@ procedure is in `references/brief-template.md`.
 ### 3. Draw, then yield
 
 - Write a spec file (a `.mmd` mermaid file, or JSON nodes and edges) in the
-  session temp dir, then run `bwc draw --project <p> --spec <file>`. Always do
+  session temp dir, then run `bwm draw --project <p> --spec <file>`. Always do
   this, board open or not, so board state stays current and a later
   `/brainstorm-with-me:board` shows everything.
 - Board not open (the default): also put the diagram in your reply as a fenced
@@ -76,11 +76,11 @@ Open the board only when the user asks for it or runs
 `/brainstorm-with-me:board`. Never open it from start, brief, critic,
 wrap, pickup, or status on your own.
 
-- `bwc open --project <p>` returns at once with the board URL.
-- While it is open, start `bwc await --project <p>` with the Bash tool and
+- `bwm open --project <p>` returns at once with the board URL.
+- While it is open, start `bwm await --project <p>` with the Bash tool and
   `run_in_background: true`. When the user types on the board or edits an
   item, the call returns and wakes you. Restart it after every response so the
-  user never talks to an empty room. If it was interrupted, run `bwc pending`.
+  user never talks to an empty room. If it was interrupted, run `bwm pending`.
 
 ### 5. Read board input as the user's words
 
@@ -94,33 +94,33 @@ wrap, pickup, or status on your own.
 - `render_error` means a diagram you drew does not parse in the browser. Fix it
   in your next draw.
 - If you want to reply on the board instead of in chat, use
-  `bwc await --project <p> --reply "..."`.
+  `bwm await --project <p> --reply "..."`.
 
 ### 6. Respect locks
 
 Any item the user moved, resized, or edited is locked to the user. Never
 re-layout or rewrite it. If you think it should change, draw a suggestion note
 linked to it and let the user decide. The user can unlock an item (or ask you
-to run `bwc unlock --project <p> --id <id>`) to let you rearrange it.
+to run `bwm unlock --project <p> --id <id>`) to let you rearrange it.
 
 ### 7. Keep three separate lists
 
 As things settle, write them down right away, one entry per call:
 
-- Decisions: `bwc decide --project <p> --text "..."`
-- Open questions: `bwc question --project <p> --text "..."`, and
-  `bwc resolve --project <p> --id <id> --note "..."` when answered.
-- Rejected ideas: `bwc reject --project <p> --text "..." --reason "..."`
+- Decisions: `bwm decide --project <p> --text "..."`
+- Open questions: `bwm question --project <p> --text "..."`, and
+  `bwm resolve --project <p> --id <id> --note "..."` when answered.
+- Rejected ideas: `bwm reject --project <p> --text "..." --reason "..."`
 
 Never merge these into one list. A rejected idea always has a reason.
 
 Brief edits go one section at a time:
-`bwc brief --project <p> --section "Scope" --text "..."`.
+`bwm brief --project <p> --section "Scope" --text "..."`.
 
 ### 8. Wrap
 
 At the end, write a wrap note from `references/session-notes.md` to a temp
-file and run `bwc wrap --project <p> --file <file>`, then `bwc export --project <p>`
+file and run `bwm wrap --project <p> --file <file>`, then `bwm export --project <p>`
 (writes `board.canvas`; add `--mermaid` only if the user asked for a mermaid note).
 
 ## Rules

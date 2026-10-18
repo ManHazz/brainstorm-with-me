@@ -50,7 +50,7 @@ no note app required.
 3. When you are done: `/brainstorm-with-me:wrap`. Next time:
    `/brainstorm-with-me:pickup phone-embodied-agent`.
 
-Want the notes somewhere else? `node "<plugin dir>/scripts/bwc.js" config --vault "<path>" --create`
+Want the notes somewhere else? `node "<plugin dir>/scripts/bwm.js" config --vault "<path>" --create`
 (or set the `BWC_VAULT` env var).
 
 ## Commands

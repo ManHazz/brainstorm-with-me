@@ -1,5 +1,5 @@
 'use strict';
-// Board commands for scripts/bwc.js
+// Board commands for scripts/bwm.js
 
 const fs = require('node:fs');
 const path = require('node:path');
@@ -10,7 +10,7 @@ const model = require('./board-model');
 const { specFromMermaid, validateDraw } = require('./merge');
 const srv = require('./server');
 
-const BWC = path.join(__dirname, '..', 'bwc.js');
+const BWC = path.join(__dirname, '..', 'bwm.js');
 const HOOK_TEXT_CAP = 4000;
 
 function request(info, method, urlPath, body, timeoutMs = 30000) {
@@ -60,7 +60,7 @@ function lockFile() {
   return path.join(srv.home(), 'server.lock');
 }
 
-// exclusive spawn lock so two bwc processes never start two servers
+// exclusive spawn lock so two bwm processes never start two servers
 function tryLock() {
   fs.mkdirSync(srv.home(), { recursive: true });
   try {
@@ -93,7 +93,7 @@ async function ensureServer() {
     while (Date.now() < until) {
       locked = tryLock();
       if (locked) break;
-      await sleep(150); // another bwc is starting it
+      await sleep(150); // another bwm is starting it
       const info = await runningServer();
       if (info) return info;
     }

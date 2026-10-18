@@ -1,6 +1,6 @@
 'use strict';
 
-// Vault commands for scripts/bwc.js. Each command takes parsed args and returns a
+// Vault commands for scripts/bwm.js. Each command takes parsed args and returns a
 // JSON-able result. Args may be an object ({ project, text, ... }) or a raw argv array.
 
 const fs = require('node:fs');
