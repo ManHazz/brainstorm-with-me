@@ -16,7 +16,7 @@ All notable changes to this project are listed here. The format follows
 - `idea-critic` agent (read only) with a scored, no-flattery rubric.
 - Local board server on 127.0.0.1 with turn taking, user locks, suggestion
   notes, and a semantic diff of user edits.
-- Bundled mermaid 11.4.1 for offline diagram rendering.
+- Bundled mermaid 11.17.2 for offline diagram rendering.
 - Vault storage: brief, decisions, open questions, rejected ideas, critiques,
   session wraps, and a JSON Canvas export, with safe writes and conflict files.
 - Validator for `.canvas` files and mermaid blocks.

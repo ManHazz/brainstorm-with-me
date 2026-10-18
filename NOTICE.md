@@ -22,6 +22,6 @@ only. No code or text from them was copied into this repo.
 
 ## Bundled third party code
 
-- mermaid 11.4.1 (MIT, https://github.com/mermaid-js/mermaid), vendored in
+- mermaid 11.17.2 (MIT, https://github.com/mermaid-js/mermaid), vendored in
   `vendor/mermaid/`. Its license is in `vendor/mermaid/LICENSE`. Version and
   checksum are recorded next to it.
