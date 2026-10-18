@@ -17,9 +17,11 @@
   <span class="spacer"></span>
   <button id="btn-note" type="button" title="Add a sticky note">New note</button>
   <button id="btn-connect" type="button" title="Click two items to connect them">Connect</button>
-  <button id="btn-fit" type="button" title="Fit everything in view">Fit</button>
+  <button id="btn-delete" type="button" title="Delete the selected note, diagram or arrow (Delete key)" disabled>Delete</button>
+  <button id="btn-fit"type="button" title="Fit everything in view">Fit</button>
   <button id="btn-end" type="button" title="Tell Claude the session is over">End session</button>
 </header>
+<div id="stage" class="stage" data-dock="bottom">
 <main id="viewport" tabindex="0" aria-label="Board canvas">
   <div id="world">
     <svg id="edges" aria-hidden="true">
@@ -34,12 +36,26 @@
   </div>
   <div id="hint" class="hint"></div>
 </main>
-<section class="chat" aria-label="Chat with Claude">
+<section id="chat" class="chat" aria-label="Chat with Claude">
+  <div id="chat-head" class="chat-head" title="Drag to move when floating">
+    <button type="button" id="chat-toggle" class="chat-toggle" aria-expanded="false" title="Show or hide the chat">
+      <span class="chat-title">Chat</span><span id="chat-unread" class="chat-unread" hidden></span>
+    </button>
+    <span class="spacer"></span>
+    <span class="dock-group" role="group" aria-label="Chat position">
+      <button type="button" class="dock-btn" data-dock="top" title="Dock top" aria-label="Dock top">Top</button>
+      <button type="button" class="dock-btn" data-dock="left" title="Dock left" aria-label="Dock left">Left</button>
+      <button type="button" class="dock-btn" data-dock="bottom" title="Dock bottom" aria-label="Dock bottom">Bottom</button>
+      <button type="button" class="dock-btn" data-dock="right" title="Dock right" aria-label="Dock right">Right</button>
+      <button type="button" class="dock-btn" data-dock="float" title="Float and drag anywhere" aria-label="Float">Float</button>
+    </span>
+  </div>
   <div id="chat-log" class="chat-log" aria-live="polite"></div>
   <form id="chat-form" class="chat-form">
-    <textarea id="chat-input" rows="1" placeholder="Type to Claude. Enter sends, Shift+Enter for a new line."></textarea>
-    <button type="submit">Send</button>
+    <textarea id="chat-input" rows="1" placeholder="Message Claude. Enter sends, Shift+Enter for a new line."></textarea>
+    <button type="submit" class="send">Send</button>
   </form>
 </section>
+</div>
 </body>
 </html>

@@ -9,7 +9,7 @@
   const STATUS_TEXT = {
     your_turn: 'Your turn',
     claude_reading: 'Claude is reading',
-    claude_working: 'Claude is drawing',
+    claude_working: 'Claude is replying',
     offline: 'Server stopped',
   };
 
@@ -349,6 +349,7 @@
       log.appendChild(div);
     }
     if (atBottom || chat.length) log.scrollTop = log.scrollHeight;
+    updateUnread(chat);
   }
 
   function setStatus(s) {
@@ -360,7 +361,15 @@
   function select(sel) {
     state.selected = sel;
     for (const [id, el] of els) el.classList.toggle('selected', !!sel && sel.kind === 'node' && sel.id === id);
+    $('btn-delete').disabled = !sel;
     renderEdges();
+  }
+
+  function deleteSelected() {
+    const sel = state.selected;
+    if (!sel) return;
+    select(null);
+    sendEdit({ op: 'delete', id: sel.id });
   }
 
   function applyServer(data) {
@@ -573,11 +582,10 @@
     if (ev.key === 'Escape') { stopConnect(); select(null); return; }
     if ((ev.key === 'Delete' || ev.key === 'Backspace') && state.selected) {
       ev.preventDefault();
-      const sel = state.selected;
-      select(null);
-      sendEdit({ op: 'delete', id: sel.id });
+      deleteSelected();
     }
   });
+  $('btn-delete').addEventListener('click', deleteSelected);
 
   // chat
   const input = $('chat-input');
@@ -602,6 +610,99 @@
     input.style.height = '';
     input.style.height = Math.min(120, input.scrollHeight) + 'px';
   });
+
+  // chat dock: bottom, top, left, right or a floating window. Saved in this browser only.
+  const stage = $('stage');
+  const chatEl = $('chat');
+  const DOCKS = ['top', 'left', 'bottom', 'right', 'float'];
+  let seenClaude = null; // claude messages already seen; null until the first sync
+  let dockPrefs = {};
+  try { dockPrefs = JSON.parse(localStorage.getItem('bwm-chat') || '{}') || {}; } catch (_) { /* storage blocked */ }
+  function saveDock() {
+    try { localStorage.setItem('bwm-chat', JSON.stringify(dockPrefs)); } catch (_) { /* storage blocked */ }
+  }
+  function applyDock() {
+    const dock = DOCKS.includes(dockPrefs.dock) ? dockPrefs.dock : 'bottom';
+    stage.dataset.dock = dock;
+    // the CSS resize grip writes inline width/height; clear them so collapsing and docking use the stored size
+    chatEl.style.width = '';
+    chatEl.style.height = '';
+    const size = (dockPrefs.sizes && dockPrefs.sizes[dock]) || {};
+    for (const k of ['w', 'h']) {
+      const v = Number(size[k]);
+      if (v > 0) stage.style.setProperty('--chat-' + k, Math.round(v) + 'px');
+      else stage.style.removeProperty('--chat-' + k);
+    }
+    for (const b of document.querySelectorAll('.dock-btn')) b.classList.toggle('active', b.dataset.dock === dock);
+    const collapsed = dockPrefs.collapsed !== false; // the desktop chat is the main channel, so start collapsed
+    chatEl.classList.toggle('collapsed', collapsed);
+    $('chat-toggle').setAttribute('aria-expanded', String(!collapsed));
+    if (!collapsed) { seenClaude = claudeCount(state.board.chat || []); updateUnread(state.board.chat || []); }
+    if (dock === 'float' && !collapsed) keepFloatInside();
+  }
+  function claudeCount(chat) { return chat.filter((m) => m.who !== 'user').length; }
+  function updateUnread(chat) {
+    const badge = $('chat-unread');
+    if (!badge) return;
+    const open = !chatEl.classList.contains('collapsed');
+    if (open || seenClaude === null) seenClaude = claudeCount(chat);
+    const n = open ? 0 : Math.max(0, claudeCount(chat) - seenClaude);
+    badge.hidden = n === 0;
+    badge.textContent = String(n);
+  }
+  $('chat-toggle').addEventListener('click', () => {
+    dockPrefs.collapsed = !chatEl.classList.contains('collapsed');
+    saveDock();
+    applyDock();
+  });
+  function keepFloatInside() {
+    const r = stage.getBoundingClientRect();
+    const w = chatEl.offsetWidth, h = chatEl.offsetHeight;
+    const x = Math.max(0, Math.min(Number(dockPrefs.x) || 16, Math.max(0, r.width - w)));
+    const y = Math.max(0, Math.min(Number(dockPrefs.y) || 16, Math.max(0, r.height - h)));
+    stage.style.setProperty('--chat-x', x + 'px');
+    stage.style.setProperty('--chat-y', y + 'px');
+  }
+  for (const b of document.querySelectorAll('.dock-btn')) {
+    b.addEventListener('click', () => { dockPrefs.dock = b.dataset.dock; saveDock(); applyDock(); });
+  }
+  $('chat-head').addEventListener('pointerdown', (ev) => {
+    if (stage.dataset.dock !== 'float' || ev.target.closest('button')) return;
+    ev.preventDefault();
+    const sr = stage.getBoundingClientRect();
+    const cr = chatEl.getBoundingClientRect();
+    const dx = ev.clientX - cr.left, dy = ev.clientY - cr.top;
+    const head = $('chat-head');
+    head.setPointerCapture(ev.pointerId);
+    const move = (e) => {
+      dockPrefs.x = Math.max(0, Math.min(e.clientX - sr.left - dx, sr.width - cr.width));
+      dockPrefs.y = Math.max(0, Math.min(e.clientY - sr.top - dy, sr.height - cr.height));
+      stage.style.setProperty('--chat-x', dockPrefs.x + 'px');
+      stage.style.setProperty('--chat-y', dockPrefs.y + 'px');
+    };
+    const up = () => {
+      head.removeEventListener('pointermove', move);
+      head.removeEventListener('pointerup', up);
+      head.removeEventListener('pointercancel', up);
+      saveDock();
+    };
+    head.addEventListener('pointermove', move);
+    head.addEventListener('pointerup', up);
+    head.addEventListener('pointercancel', up);
+  });
+  // remember the size after the user drags the CSS resize grip
+  chatEl.addEventListener('pointerup', () => {
+    if (chatEl.classList.contains('collapsed')) return;
+    const dock = stage.dataset.dock;
+    dockPrefs.sizes = dockPrefs.sizes || {};
+    const size = dockPrefs.sizes[dock] = dockPrefs.sizes[dock] || {};
+    if (dock === 'float') { size.w = chatEl.offsetWidth; size.h = chatEl.offsetHeight; }
+    else if (dock === 'left' || dock === 'right') size.w = chatEl.offsetWidth;
+    else size.h = chatEl.offsetHeight;
+    saveDock();
+  });
+  window.addEventListener('resize', () => { if (stage.dataset.dock === 'float') keepFloatInside(); });
+  applyDock();
 
   // ---- start ----
   function initMermaid() {
